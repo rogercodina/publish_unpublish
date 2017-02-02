@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * Implements hook_permission().
+ */
+function publish_unpublish_permission() {
+  return array(
+    'publish unpublish nodes' => array(
+      'title' => t('Publish and unpublish nodes'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function publish_unpublish_menu() {
+
+  $items['node/%/publish'] = array(
+    'page callback' => 'publish_unpublish_pub_action',
+    'page arguments' => array(1),
+    'access callback' => 'user_access',
+    'access arguments' => array (
+      'publish unpublish nodes'
+    ),
+  );
+
+  $items['node/%/unpublish'] = array(
+    'page callback' => 'publish_unpublish_unpub_action',
+    'page arguments' => array(1),
+    'access callback' => 'user_access',
+    'access arguments' => array (
+      'publish unpublish nodes' 
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Publish action.
+ */
+function publish_unpublish_pub_action($nid) {
+  $node = node_load($nid);
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  $node_wrapper->status->set(1);
+  $node_wrapper->save();
+
+  drupal_goto('user');
+}
+
+/**
+ * Unpublish action.
+ */
+function publish_unpublish_unpub_action($nid) {  
+  $node = node_load($nid);
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  $node_wrapper->status->set(0);
+  $node_wrapper->save();
+
+  drupal_goto('user');
+}

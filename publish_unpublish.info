@@ -1,0 +1,5 @@
+name = Publish and unpublish
+description = Allows to publish and unpublish nodes via URL (users with custom permission)
+package = Custom
+core = 7.x
+version = "7.x-1.0"
